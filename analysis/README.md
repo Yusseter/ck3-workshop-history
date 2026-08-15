@@ -44,6 +44,6 @@ Steam Workshop Change Notes inventory including:
 - rate-limit-aware Steam retrieval
 - per-page SHA-256 provenance
 
-This initial analysis revision records the first complete Steam event inventory pass. Two parser count mismatches remain under investigation because change-note body text beginning with `Update:` can be mistaken for event headlines.
+The Steam event inventory now validates all selected mods against Steam's declared Change Notes counts. Events are identified from Steam's actual changelog headline structure rather than arbitrary body text beginning with `Update:`, producing 1,198 validated events with no parser warnings.
 
 The data in this directory is retained as an audit trail for the reconstruction process.

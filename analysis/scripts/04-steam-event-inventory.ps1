@@ -1,15 +1,14 @@
 $ErrorActionPreference = "Stop"
 
-$RepoRoot   = "F:\Storage\Codding\projects\ck3\ck3-workshop-history"
-$OutDir     = Join-Path $RepoRoot "analysis\results\04-steam-event-inventory"
-$RawDir     = Join-Path $OutDir "raw-pages"
-$PackageDir = Join-Path $RepoRoot "analysis\packages"
+$RepoRoot    = "F:\Storage\Codding\projects\ck3\ck3-workshop-history"
+$OutDir      = Join-Path $RepoRoot "analysis\results\04-steam-event-inventory"
+$RawDir      = Join-Path $OutDir "raw-pages"
+$PackageDir  = Join-Path $RepoRoot "analysis\packages"
 $PackagePath = Join-Path $PackageDir "04-steam-event-inventory.zip"
 
 $ForceRefresh = $false
 $MaxPages = 100
 
-# Steam rate limiting is intentionally handled conservatively.
 $MinDelayMs = 4000
 $MaxDelayMs = 6000
 $MaxAttempts = 4
@@ -31,8 +30,10 @@ $Targets = @(
     @{ Repo="Western-Steppe-Expanded";            Abbr="WSE";         WorkshopId="3490396842" }
 )
 
-function Convert-SteamHtmlToText {
-    param([string]$Html)
+function Convert-HtmlFragmentToText {
+    param(
+        [string]$Html
+    )
 
     $Text = $Html
 
@@ -84,14 +85,40 @@ function Convert-SteamHtmlToText {
     return ($Lines -join "`n")
 }
 
+function Get-SteamUpdateHeadlineMatches {
+    param(
+        [string]$Html
+    )
+
+    # A real Steam Workshop event is represented by:
+    #
+    # <div class="changelog headline">Update: ...</div>
+    #
+    # Change-note bodies are allowed to contain ordinary text beginning
+    # with "Update:" or "UPDATE:". Those must not be treated as events.
+    $Pattern =
+        '(?is)<div\b' +
+        '(?=[^>]*\bclass\s*=\s*"[^"]*\bchangelog\b[^"]*")' +
+        '(?=[^>]*\bclass\s*=\s*"[^"]*\bheadline\b[^"]*")' +
+        '[^>]*>(.*?)</div>'
+
+    return [regex]::Matches(
+        $Html,
+        $Pattern
+    )
+}
+
 function Normalize-SteamDisplayedTime {
     param(
         [string]$Raw,
         [int]$DefaultYear
     )
 
-    $Culture = [Globalization.CultureInfo]::InvariantCulture
-    $Styles = [Globalization.DateTimeStyles]::AllowWhiteSpaces
+    $Culture =
+        [Globalization.CultureInfo]::InvariantCulture
+
+    $Styles =
+        [Globalization.DateTimeStyles]::AllowWhiteSpaces
 
     $Value = $Raw.Trim()
 
@@ -99,7 +126,8 @@ function Normalize-SteamDisplayedTime {
         $Candidate = $Value
     }
     else {
-        $Candidate = $Value -replace '\s*@', ", $DefaultYear @"
+        $Candidate =
+            $Value -replace '\s*@', ", $DefaultYear @"
     }
 
     $Formats = @(
@@ -121,7 +149,9 @@ function Normalize-SteamDisplayedTime {
                 [ref]$Parsed
             )
         ) {
-            return $Parsed.ToString("yyyy-MM-dd HH:mm")
+            return $Parsed.ToString(
+                "yyyy-MM-dd HH:mm"
+            )
         }
     }
 
@@ -150,6 +180,19 @@ function Test-SteamChangeLogHtml {
         '(?is)changeLogCtn|changelog headline|Showing\s+\d+\s*-\s*\d+\s+of'
     ) {
         throw "Response does not look like a Steam Change Notes page: $Url"
+    }
+}
+
+function Get-HttpStatusCode {
+    param(
+        $ErrorRecord
+    )
+
+    try {
+        return [int]$ErrorRecord.Exception.Response.StatusCode
+    }
+    catch {
+        return $null
     }
 }
 
@@ -188,17 +231,6 @@ function Get-RetryAfterSeconds {
     return $FallbackSeconds
 }
 
-function Get-HttpStatusCode {
-    param($ErrorRecord)
-
-    try {
-        return [int]$ErrorRecord.Exception.Response.StatusCode
-    }
-    catch {
-        return $null
-    }
-}
-
 function Wait-BetweenSteamRequests {
     $Delay = Get-Random `
         -Minimum $MinDelayMs `
@@ -221,7 +253,8 @@ function Get-SteamPage {
     $Url =
         "https://steamcommunity.com/sharedfiles/filedetails/changelog/${WorkshopId}?p=$Page&l=english"
 
-    $RawModDir = Join-Path $RawDir $WorkshopId
+    $RawModDir =
+        Join-Path $RawDir $WorkshopId
 
     New-Item `
         -ItemType Directory `
@@ -252,6 +285,7 @@ function Get-SteamPage {
                 Html      = $Html
                 RawPath   = $RawPath
                 FromCache = $true
+
                 FetchedAt = (
                     Get-Item $RawPath
                 ).LastWriteTimeUtc.ToString("o")
@@ -312,6 +346,7 @@ function Get-SteamPage {
                 Html      = $Html
                 RawPath   = $RawPath
                 FromCache = $false
+
                 FetchedAt = (
                     Get-Date
                 ).ToUniversalTime().ToString("o")
@@ -319,7 +354,8 @@ function Get-SteamPage {
         }
         catch {
             $LastError = $_
-            $StatusCode = Get-HttpStatusCode $_
+            $StatusCode =
+                Get-HttpStatusCode $_
 
             if ($StatusCode -eq 429) {
                 $FallbackWait =
@@ -344,7 +380,9 @@ function Get-SteamPage {
                         $MaxAttempts
                     )
 
-                    Start-Sleep -Seconds $WaitSeconds
+                    Start-Sleep `
+                        -Seconds $WaitSeconds
+
                     continue
                 }
             }
@@ -362,7 +400,8 @@ function Get-SteamPage {
                     $MaxAttempts
                 )
 
-                Start-Sleep -Seconds $WaitSeconds
+                Start-Sleep `
+                    -Seconds $WaitSeconds
             }
         }
     }
@@ -376,7 +415,9 @@ function Get-SteamPage {
 }
 
 function Get-UsefulPreviewLines {
-    param([string]$Segment)
+    param(
+        [string]$Segment
+    )
 
     $Result = foreach (
         $Line in ($Segment -split "\r?\n")
@@ -467,10 +508,17 @@ New-Item `
     -Force |
     Out-Null
 
-$Events     = [System.Collections.ArrayList]::new()
-$Summaries  = [System.Collections.ArrayList]::new()
-$RawIndex   = [System.Collections.ArrayList]::new()
-$Warnings   = [System.Collections.ArrayList]::new()
+$Events =
+    [System.Collections.ArrayList]::new()
+
+$Summaries =
+    [System.Collections.ArrayList]::new()
+
+$RawIndex =
+    [System.Collections.ArrayList]::new()
+
+$Warnings =
+    [System.Collections.ArrayList]::new()
 
 foreach ($Target in $Targets) {
     Write-Host ""
@@ -481,8 +529,8 @@ foreach ($Target in $Targets) {
     $DeclaredCount = $null
     $ExpectedPages = $null
     $GlobalOrdinal = 0
-    $ParsedForMod  = 0
-    $PagesFetched  = 0
+    $ParsedForMod = 0
+    $PagesFetched = 0
 
     for (
         $Page = 1;
@@ -524,23 +572,27 @@ foreach ($Target in $Targets) {
             )
         ) -replace '\\', '/'
 
-        [void]$RawIndex.Add([pscustomobject]@{
-            Repo         = $Target.Repo
-            Abbreviation = $Target.Abbr
-            WorkshopId   = $Target.WorkshopId
-            Page         = $Page
-            Url          = $PageData.Url
-            FromCache    = $PageData.FromCache
-            FetchedAtUtc = $PageData.FetchedAt
-            Sha256       = $RawHash
-            RawFile      = $RawRelativePath
-        })
+        [void]$RawIndex.Add(
+            [pscustomobject]@{
+                Repo         = $Target.Repo
+                Abbreviation = $Target.Abbr
+                WorkshopId   = $Target.WorkshopId
+                Page         = $Page
+                Url          = $PageData.Url
+                FromCache    = $PageData.FromCache
+                FetchedAtUtc = $PageData.FetchedAt
+                Sha256       = $RawHash
+                RawFile      = $RawRelativePath
+            }
+        )
 
-        $Text = Convert-SteamHtmlToText $PageData.Html
+        $PageText =
+            Convert-HtmlFragmentToText `
+                -Html $PageData.Html
 
         if ($Page -eq 1) {
             $CountMatch = [regex]::Match(
-                $Text,
+                $PageText,
                 '(?im)Showing\s+\d+\s*-\s*\d+\s+of\s+([\d,]+)\s+entries'
             )
 
@@ -549,9 +601,10 @@ foreach ($Target in $Targets) {
                     $CountMatch.Groups[1].Value -replace ',', ''
                 )
 
-                $ExpectedPages = [int][Math]::Ceiling(
-                    $DeclaredCount / 10.0
-                )
+                $ExpectedPages =
+                    [int][Math]::Ceiling(
+                        $DeclaredCount / 10.0
+                    )
 
                 Write-Host (
                     "Steam declares {0} events across {1} pages." -f
@@ -570,19 +623,15 @@ foreach ($Target in $Targets) {
             }
         }
 
-        # Do not use the name $Matches here.
-        # $Matches is an automatic PowerShell variable modified by -match.
-        $UpdateMatches = @(
-            [regex]::Matches(
-                $Text,
-                '(?im)^Update:\s*(.+?)\s*$'
-            )
+        $UpdateHeadlines = @(
+            Get-SteamUpdateHeadlineMatches `
+                -Html $PageData.Html
         )
 
-        if ($UpdateMatches.Count -eq 0) {
+        if ($UpdateHeadlines.Count -eq 0) {
             if ($Page -eq 1) {
                 [void]$Warnings.Add(
-                    "$($Target.Repo): no update entries parsed from page 1."
+                    "$($Target.Repo): no real Steam update headlines found on page 1."
                 )
             }
 
@@ -596,56 +645,82 @@ foreach ($Target in $Targets) {
         Write-Host (
             "Page {0} -> {1} events" -f
             $Page,
-            $UpdateMatches.Count
+            $UpdateHeadlines.Count
         )
+
+        try {
+            $PageCaptureYear = (
+                [DateTimeOffset]::Parse(
+                    $PageData.FetchedAt,
+                    [Globalization.CultureInfo]::InvariantCulture
+                )
+            ).Year
+        }
+        catch {
+            $PageCaptureYear =
+                (Get-Date).Year
+        }
 
         for (
             $Index = 0;
-            $Index -lt $UpdateMatches.Count;
+            $Index -lt $UpdateHeadlines.Count;
             $Index++
         ) {
-            $UpdateMatch = $UpdateMatches[$Index]
+            $UpdateHeadline =
+                $UpdateHeadlines[$Index]
 
             $GlobalOrdinal++
             $ParsedForMod++
 
-            $RawWhen =
-                $UpdateMatch.Groups[1].Value.Trim()
+            $HeadlineText =
+                Convert-HtmlFragmentToText `
+                    -Html $UpdateHeadline.Groups[1].Value
+
+            $RawWhen = (
+                $HeadlineText -replace
+                '(?i)^Update:\s*',
+                ''
+            ).Trim()
 
             $SegmentStart = (
-                $UpdateMatch.Index +
-                $UpdateMatch.Length
+                $UpdateHeadline.Index +
+                $UpdateHeadline.Length
             )
 
             if (
                 $Index + 1 -lt
-                $UpdateMatches.Count
+                $UpdateHeadlines.Count
             ) {
                 $SegmentEnd =
-                    $UpdateMatches[
+                    $UpdateHeadlines[
                         $Index + 1
                     ].Index
             }
             else {
-                $SegmentEnd = $Text.Length
+                $SegmentEnd =
+                    $PageData.Html.Length
             }
 
             if ($SegmentEnd -gt $SegmentStart) {
-                $Segment = $Text.Substring(
-                    $SegmentStart,
-                    $SegmentEnd - $SegmentStart
-                )
+                $SegmentHtml =
+                    $PageData.Html.Substring(
+                        $SegmentStart,
+                        $SegmentEnd - $SegmentStart
+                    )
             }
             else {
-                $Segment = ""
+                $SegmentHtml = ""
             }
 
+            $SegmentText =
+                Convert-HtmlFragmentToText `
+                    -Html $SegmentHtml
+
             $PreviewLines = @(
-                Get-UsefulPreviewLines $Segment
+                Get-UsefulPreviewLines `
+                    -Segment $SegmentText
             )
 
-            # Use regex directly so PowerShell's automatic
-            # $Matches variable cannot affect $UpdateMatches.
             $VersionText = @(
                 $PreviewLines |
                     Where-Object {
@@ -665,7 +740,7 @@ foreach ($Target in $Targets) {
             $NormalizedFetchedTime =
                 Normalize-SteamDisplayedTime `
                     -Raw $RawWhen `
-                    -DefaultYear (Get-Date).Year
+                    -DefaultYear $PageCaptureYear
 
             if (-not $NormalizedFetchedTime) {
                 [void]$Warnings.Add(
@@ -673,41 +748,48 @@ foreach ($Target in $Targets) {
                 )
             }
 
-            [void]$Events.Add([pscustomobject]@{
-                Repo                  = $Target.Repo
-                Abbreviation          = $Target.Abbr
-                WorkshopId            = $Target.WorkshopId
-                NewestOrdinal         = $GlobalOrdinal
-                Page                  = $Page
-                PositionOnPage        = $Index + 1
-                RawDisplayedTime      = $RawWhen
-                NormalizedFetchedTime = $NormalizedFetchedTime
+            [void]$Events.Add(
+                [pscustomobject]@{
+                    Repo                  = $Target.Repo
+                    Abbreviation          = $Target.Abbr
+                    WorkshopId            = $Target.WorkshopId
+                    NewestOrdinal         = $GlobalOrdinal
+                    Page                  = $Page
+                    PositionOnPage        = $Index + 1
+                    RawDisplayedTime      = $RawWhen
+                    NormalizedFetchedTime = $NormalizedFetchedTime
 
-                VersionText =
-                    if ($VersionText.Count) {
-                        $VersionText[0]
-                    }
-                    else {
-                        $null
-                    }
+                    VersionText =
+                        if ($VersionText.Count) {
+                            $VersionText[0]
+                        }
+                        else {
+                            $null
+                        }
 
-                Preview =
-                    if ($Preview.Count) {
-                        $Preview[0]
-                    }
-                    else {
-                        $null
-                    }
+                    Preview =
+                        if ($Preview.Count) {
+                            $Preview[0]
+                        }
+                        else {
+                            $null
+                        }
 
-                SourceUrl             = $PageData.Url
-                RawPageSha256         = $RawHash
-                CanonicalTimeVerified = $false
-            })
+                    SourceUrl =
+                        $PageData.Url
+
+                    RawPageSha256 =
+                        $RawHash
+
+                    CanonicalTimeVerified =
+                        $false
+                }
+            )
         }
 
         if (
             (-not $ExpectedPages) -and
-            ($UpdateMatches.Count -lt 10)
+            ($UpdateHeadlines.Count -lt 10)
         ) {
             break
         }
@@ -722,19 +804,21 @@ foreach ($Target in $Targets) {
         )
     }
 
-    [void]$Summaries.Add([pscustomobject]@{
-        Repo               = $Target.Repo
-        Abbreviation       = $Target.Abbr
-        WorkshopId         = $Target.WorkshopId
-        DeclaredEventCount = $DeclaredCount
-        ParsedEventCount   = $ParsedForMod
-        PagesFetched       = $PagesFetched
+    [void]$Summaries.Add(
+        [pscustomobject]@{
+            Repo               = $Target.Repo
+            Abbreviation       = $Target.Abbr
+            WorkshopId         = $Target.WorkshopId
+            DeclaredEventCount = $DeclaredCount
+            ParsedEventCount   = $ParsedForMod
+            PagesFetched       = $PagesFetched
 
-        CountsMatch = (
-            ($null -ne $DeclaredCount) -and
-            ($DeclaredCount -eq $ParsedForMod)
-        )
-    })
+            CountsMatch = (
+                ($null -ne $DeclaredCount) -and
+                ($DeclaredCount -eq $ParsedForMod)
+            )
+        }
+    )
 }
 
 $Events |
@@ -788,6 +872,11 @@ SHA-256 so the parser results can be audited and reproduced.
 `$ForceRefresh = $true` in the analysis script when the Steam pages should be
 downloaded again.
 
+Events are identified from Steam's actual changelog headline HTML structure
+(`div.changelog.headline`) rather than from arbitrary text beginning with
+`Update:`. Change-note bodies may themselves contain text beginning with
+`Update:` and must not be interpreted as separate Workshop events.
+
 `RawDisplayedTime` is the timestamp text returned by the direct Steam HTTP
 request used for this analysis.
 
@@ -808,6 +897,13 @@ folder and does not automatically classify Git snapshot matches.
 New-AnalysisPackage `
     -ResultDirectory $OutDir
 
+$FailedCounts = @(
+    $Summaries |
+        Where-Object {
+            -not $_.CountsMatch
+        }
+)
+
 Write-Host ""
 Write-Host "================ ANALYSIS 04 COMPLETE ================"
 
@@ -823,6 +919,18 @@ $Summaries |
 Write-Host ""
 Write-Host "Total parsed Steam events: $($Events.Count)"
 Write-Host "Warnings: $($Warnings.Count)"
+
+Write-Host ""
+
+if ($FailedCounts.Count -eq 0) {
+    Write-Host "Validation: PASS"
+}
+else {
+    Write-Host (
+        "Validation: FAIL ({0} mod(s) have mismatched event counts)" -f
+        $FailedCounts.Count
+    )
+}
 
 Write-Host ""
 Write-Host "Results:"

@@ -17,6 +17,11 @@ SHA-256 so the parser results can be audited and reproduced.
 `$ForceRefresh = $true` in the analysis script when the Steam pages should be
 downloaded again.
 
+Events are identified from Steam's actual changelog headline HTML structure
+(`div.changelog.headline`) rather than from arbitrary text beginning with
+`Update:`. Change-note bodies may themselves contain text beginning with
+`Update:` and must not be interpreted as separate Workshop events.
+
 `RawDisplayedTime` is the timestamp text returned by the direct Steam HTTP
 request used for this analysis.
 

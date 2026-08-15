@@ -1,10 +1,1 @@
-Ethnicities-and-Portraits-Expanded page 7 event 8: timestamp parse failed: '-Added around 15 new beard and mustache variants to various cultures.'
-Ethnicities-and-Portraits-Expanded: Steam declares 86 entries but parser found 87.
-Special-World page 2 event 4: timestamp parse failed: 'More Holding Graphics is now required as it is again currently being updated. Make sure you update your playset. Put it ahead of this mod.'
-Special-World page 2 event 7: timestamp parse failed: 'More Holding Graphics is now required as it is again currently being updated. Make sure you update your playset. Put it ahead of this mod.'
-Special-World page 3 event 5: timestamp parse failed: 'Legendary Compatch Update'
-Special-World page 3 event 7: timestamp parse failed: 'Removed any trace of "Yingzao Fashi — 3D Models of Medieval Chinese Cities & Special Buildings" by pLISM from the compatch. When "Prosperous Kaifeng" by ver♱ighost was no longer being updated I transitioned the cities to how YF did them but I retained the file names from PK as I couldn't get the new ones to work right. The only thing that was added was the localization from YF the Changan model files but I'm not certain I ever implemented them. The last update to those files was March 15th, when YF only had the 3 cities and no other models.'
-Special-World page 17 event 8: timestamp parse failed: 'No longer required COW3 as it is now fully integrated'
-Special-World page 22 event 9: timestamp parse failed: 'Significant update with updated for Medieval Arts and MHG Compatability/Integration'
-Special-World page 29 event 7: timestamp parse failed: 'Updates to Medieval Arts (7 new buildings with graphics)'
-Special-World: Steam declares 470 entries but parser found 477.
+No warnings.

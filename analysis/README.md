@@ -34,4 +34,16 @@ Historical Git analysis including:
 - extension inventories
 - duplicate-tree detection
 
+### 04-steam-event-inventory
+
+Steam Workshop Change Notes inventory including:
+
+- raw Change Notes pages retained for audit and reproducibility
+- declared and parsed event counts per mod
+- normalized Steam-displayed timestamps
+- rate-limit-aware Steam retrieval
+- per-page SHA-256 provenance
+
+This initial analysis revision records the first complete Steam event inventory pass. Two parser count mismatches remain under investigation because change-note body text beginning with `Update:` can be mistaken for event headlines.
+
 The data in this directory is retained as an audit trail for the reconstruction process.

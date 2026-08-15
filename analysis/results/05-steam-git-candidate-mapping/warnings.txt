@@ -1,0 +1,3 @@
+Culture-and-Faith-Granularity commit 3b866d6489ab4552cf501aebce5f7836c90c45a5: descriptor Workshop ID 3422074499 differs from expected 3206891770 and is not another selected target.
+EPE-CFP commit b0c1c52509748ba4830cadbdc4948334eeea2a6b: descriptor Workshop ID 2543865921 belongs to another selected target.
+MBP-EPE-CFP commit becc48e7e22f0b0818335541866e2cf4775455f6: descriptor Workshop ID 2996881191 belongs to another selected target.

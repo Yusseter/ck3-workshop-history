@@ -46,4 +46,17 @@ Steam Workshop Change Notes inventory including:
 
 The Steam event inventory now validates all selected mods against Steam's declared Change Notes counts. Events are identified from Steam's actual changelog headline structure rather than arbitrary body text beginning with `Update:`, producing 1,198 validated events with no parser warnings.
 
+### 05-steam-git-candidate-mapping
+
+Steam-to-Git candidate mapping including:
+
+- one matrix row for every validated Steam Change Notes event
+- deterministic Steam/Git candidate-pair scoring
+- historical Git commit structural classification
+- placeholder and cross-target snapshot detection
+- current-tree evidence from the local/Steam comparison
+- explicit ambiguous and unresolved classifications
+
+This analysis maps 1,198 Steam events against 116 historical Git commits and produces 318 candidate pairs. Candidate relationships remain unverified at this stage; ambiguous same-day updates, repair commits, invalid snapshots, and unresolved events are intentionally preserved for later content and archive-source verification.
+
 The data in this directory is retained as an audit trail for the reconstruction process.

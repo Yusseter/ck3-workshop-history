@@ -1,0 +1,11 @@
+Community-Flavor-Pack 58ab171a8afd9e3da572045403bc8e71b2ba659b : descriptor.mod missing
+Culture-and-Faith-Granularity 0e02a3d07b146ae3ceb6f8d5027aab474a128af4 : descriptor.mod missing
+Culture-and-Faith-Granularity 3b866d6489ab4552cf501aebce5f7836c90c45a5 : descriptor remote_file_id=3422074499, expected=3206891770
+EPE-CFP b0c1c52509748ba4830cadbdc4948334eeea2a6b : descriptor remote_file_id=2543865921, expected=2996881191
+Ethnicities-and-Portraits-Expanded 541b16c138e3574ce547b5a4a43ef3cfdf215854 : descriptor.mod missing
+Ethnicities-and-Portraits-Expanded e22986746fdb4b6cca0724d22e5a4089c1ada711 : descriptor.mod missing
+MBP-EPE-CFP bb12eaf64b4c30ba8e0214cbdaa3ce6b9d46cedd : descriptor.mod missing
+MBP-EPE-CFP becc48e7e22f0b0818335541866e2cf4775455f6 : descriptor remote_file_id=2996881191, expected=2543865921
+RICE d8b7e831276e62f56f5f42587d76be4a1d56e88e : descriptor.mod missing
+Turkic-World-Expanded 63ca70e7ac2e69c86ce5139979859cbe2953594a : descriptor.mod missing
+Western-Steppe-Expanded 105989508e18293613d3a5b16527e0451a83b1d3 : descriptor.mod missing

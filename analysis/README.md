@@ -14,4 +14,14 @@ Initial inventory of the existing per-mod repositories, including:
 - file sizes
 - installed Steam Workshop copies
 
+### 02-content-classification
+
+Current-content analysis including:
+
+- exact file-type inventory
+- text/binary classification
+- large-file analysis
+- ignore-rule provenance
+- comparison between local archive copies and current Steam Workshop copies
+
 The data in this directory is retained as an audit trail for the reconstruction process.

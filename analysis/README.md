@@ -59,4 +59,17 @@ Steam-to-Git candidate mapping including:
 
 This analysis maps 1,198 Steam events against 116 historical Git commits and produces 318 candidate pairs. Candidate relationships remain unverified at this stage; ambiguous same-day updates, repair commits, invalid snapshots, and unresolved events are intentionally preserved for later content and archive-source verification.
 
+### 06-skymods-archive-inventory
+
+Skymods archive inventory including:
+
+- validated catalogue pages for all selected Workshop items
+- current and historical revision inventories
+- Modsbase archive-candidate links
+- normalized Skymods-displayed UTC timestamps
+- Steam-to-Skymods time-proximity candidates
+- raw catalogue pages retained with SHA-256 provenance
+
+The inventory validates all 13 selected Skymods catalogue pages against their expected Workshop IDs and records 605 exposed revisions with no parser warnings or validation errors. Steam-to-Skymods relationships remain unverified at this stage; revision timestamps and download links identify archive candidates only and are not treated as proof of Workshop-event identity or content equivalence.
+
 The data in this directory is retained as an audit trail for the reconstruction process.

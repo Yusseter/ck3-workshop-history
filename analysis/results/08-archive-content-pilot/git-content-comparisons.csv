@@ -1,0 +1,7 @@
+"Repo","Abbreviation","WorkshopId","SkymodsRevisionKey","GitCommitSha","GitTrackedFileCount","GitComparableFileCount","ExcludedRepositoryMetadataCount","MatchingTrackedFileCount","MissingFromArchiveCount","BlobMismatchCount","ArchiveExtraFileCount","DescriptorWorkshopIdMatches","ProjectedTrackedContentMatch"
+"Culture-and-Faith-Granularity","CFG","3206891770","3206891770|2","2e2602f56ee08890cc915690989b121c299ca8d0","232","231","1","231","0","0","15","True","True"
+"Culture-Expanded","CE","2829397295","2829397295|3","8a0cffb5c6f82b7addeb8e91e25799b95d3689ae","648","647","1","647","0","0","146","True","True"
+"Culture-Expanded","CE","2829397295","2829397295|3","dd4267956356f7e84f8e6bd84bea17c8ec45ee20","648","647","1","642","0","5","146","True","False"
+"EPE-CFP","EPE-CFP","2996881191","2996881191|3","dbebe469551c494e9481693a5ef74dcc847c77b7","48","48","0","48","0","0","0","True","True"
+"EPE-CFP","EPE-CFP","2996881191","2996881191|3","ec21513d682e85426658aaf24cf68ccdd884adb9","47","47","0","42","0","5","1","True","False"
+"MBP-EPE-CFP","MBP-EPE-CFP","2543865921","2543865921|3","c86a00c074ec2900035bcd8cca81c850b38d6a3c","316","316","0","316","0","0","0","True","True"

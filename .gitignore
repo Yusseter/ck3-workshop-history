@@ -28,5 +28,6 @@
 /temp/
 /wip/
 
-# Generated analysis packages
+# Generated analysis folders
+/analysis/cache/
 /analysis/packages/

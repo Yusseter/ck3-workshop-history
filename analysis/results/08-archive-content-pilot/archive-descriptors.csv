@@ -1,0 +1,5 @@
+"Repo","Abbreviation","WorkshopIdExpected","SkymodsRevisionKey","DescriptorPath","DescriptorName","DescriptorVersion","DescriptorSupportedVersion","DescriptorRemoteFileId","DescriptorWorkshopIdMatches","DescriptorCountInArchive"
+"Culture-and-Faith-Granularity","CFG","3206891770","3206891770|2","descriptor.mod","[Kei] Culture and Faith Granularity","2.3.0 - CK 1.18","1.18.*","3206891770","True","1"
+"Culture-Expanded","CE","2829397295","2829397295|3","descriptor.mod","Culture Expanded","1.0","1.19.0.4","2829397295","True","1"
+"EPE-CFP","EPE-CFP","2996881191","2996881191|3","descriptor.mod","CFP + EPE Compatibility Patch","5.1.1","1.19.0.4","2996881191","True","1"
+"MBP-EPE-CFP","MBP-EPE-CFP","2543865921","2543865921|3","descriptor.mod","MB + EPE/CFP","1.0","1.18.4","2543865921","True","1"

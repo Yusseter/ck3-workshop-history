@@ -85,4 +85,27 @@ Archive verification planning including:
 
 The analysis combines 1,198 Steam events, 116 historical Git commits, and 605 Skymods revisions. It identifies 606 dominant temporal pairs and 144 Git/Skymods candidate relationships, prioritizing 52 archive revisions for first-pass content verification while leaving all archive contents unverified.
 
+### 08-archive-content-pilot
+
+Archive-content pilot verification including:
+
+- automated Modsbase retrieval through an isolated Chrome session
+- local archive caching for deterministic reruns
+- ZIP SHA-256 provenance and path-safe extraction
+- descriptor `remote_file_id` validation
+- Git attribute-aware projected blob comparison against historical commits
+- raw browser pages retained with SHA-256 provenance
+- content-based resolution of selected ambiguous archive/Git relationships
+
+The pilot verifies four high-value P0 Skymods revisions against six historical Git candidates. All four archive descriptors match their expected Workshop IDs, and each revision produces exactly one projected historical Git match after applying the historical repository's Git clean and text-normalization behavior.
+
+The verified projected matches are:
+
+- CFG `3206891770|2` → `2e2602f56ee08890cc915690989b121c299ca8d0`
+- CE `2829397295|3` → `8a0cffb5c6f82b7addeb8e91e25799b95d3689ae`
+- EPE-CFP `2996881191|3` → `dbebe469551c494e9481693a5ef74dcc847c77b7`
+- MBP-EPE-CFP `2543865921|3` → `c86a00c074ec2900035bcd8cca81c850b38d6a3c`
+
+The rejected alternative CE and EPE-CFP candidates each contain five genuine tracked-blob differences, producing ten difference rows in total. No final Steam-event `KNOWN + EXISTING` or `KNOWN + RECOVERED` status is assigned by this pilot stage.
+
 The data in this directory is retained as an audit trail for the reconstruction process.

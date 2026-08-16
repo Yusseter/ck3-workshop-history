@@ -72,4 +72,17 @@ Skymods archive inventory including:
 
 The inventory validates all 13 selected Skymods catalogue pages against their expected Workshop IDs and records 605 exposed revisions with no parser warnings or validation errors. Steam-to-Skymods relationships remain unverified at this stage; revision timestamps and download links identify archive candidates only and are not treated as proof of Workshop-event identity or content equivalence.
 
+### 07-archive-verification-plan
+
+Archive verification planning including:
+
+- empirical Steam-to-Skymods timestamp offset clustering
+- bidirectional temporal candidate classification
+- Steam-to-Git-to-Skymods candidate relationships
+- per-commit archive verification priorities
+- first-pass archive selection for ambiguous historical snapshots
+- later recovery candidates for missing Workshop revisions
+
+The analysis combines 1,198 Steam events, 116 historical Git commits, and 605 Skymods revisions. It identifies 606 dominant temporal pairs and 144 Git/Skymods candidate relationships, prioritizing 52 archive revisions for first-pass content verification while leaving all archive contents unverified.
+
 The data in this directory is retained as an audit trail for the reconstruction process.

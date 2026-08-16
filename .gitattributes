@@ -10,7 +10,7 @@
 .gitattributes text eol=lf
 
 # Exact source captures
-analysis/results/**/raw-pages/** -text
+analysis/results/**/raw-pages/** -text -linguist-detectable
 
 # Archived Workshop snapshots
 mods/** -text

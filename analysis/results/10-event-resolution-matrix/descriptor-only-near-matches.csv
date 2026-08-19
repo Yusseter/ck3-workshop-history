@@ -1,0 +1,4 @@
+"Repo","Abbreviation","WorkshopId","SkymodsRevisionKey","GitCommitSha","GitComparableFileCount","MatchingTrackedFileCount","MissingFromArchiveCount","BlobMismatchCount","DifferencePath","GitBlobSha1","ArchiveBlobSha1","DescriptorWorkshopIdMatches"
+"Culture-and-Faith-Granularity","CFG","3206891770","3206891770|11","3b866d6489ab4552cf501aebce5f7836c90c45a5","214","213","0","1","descriptor.mod","dde2cd31b3cfa8a33459ff417a2894b9130affe4","467a1253f5567ef9d03a9f53783408e6351788ad","True"
+"EPE-CFP","EPE-CFP","2996881191","2996881191|7","25284d7351b6cdc292cdccb3ceed15ef5336622f","40","39","0","1","descriptor.mod","48319772cdc7231ed0078b17de4f906ee12d12bf","bda01b729bc482dd00266e8c01bf3abf91d74227","True"
+"Ethnicities-and-Portraits-Expanded","EPE","2507209632","2507209632|9","b36c5a961967d25e197c816b18a6aaf7eaa0428c","4637","4636","0","1","descriptor.mod","e063273658d79ac6904b9d32152970d2d831078c","34f0b45cfcba20cb3c051837efa78b03418cb8c0","True"

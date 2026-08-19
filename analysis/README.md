@@ -125,4 +125,23 @@ The analysis completes all 52 first-pass archive revisions with no final errors.
 
 All 52 verified archives contain exactly one `descriptor.mod` whose `remote_file_id` matches the expected Workshop ID. Archive-to-Git relationships remain content-verification evidence only; this stage does not by itself assign final Steam-event `KNOWN + EXISTING` or `KNOWN + RECOVERED` statuses.
 
+### 10-event-resolution-matrix
+
+Event-level resolution analysis including:
+
+- integration of Steam events, historical Git candidates, temporal alignment, and content-verified archives
+- conservative assignment of event-level reconstruction statuses
+- exact projected Git-content resolution for verified Workshop archives
+- byte-identical archive evidence for repeated Workshop events with unchanged content
+- independent structural classification of historical Git snapshots
+- preservation of descriptor-only near matches as unresolved evidence
+- explicit rejection of candidate-limited archive absence as sufficient recovery proof
+- SHA-256 provenance for all analysis inputs and deterministic validation of generated relationships
+
+The analysis evaluates all 1,198 Steam events and 116 historical Git commits. It resolves 42 Steam events as `KNOWN + EXISTING`: 41 through unique exact projected historical Git matches and one additional Special World event through a byte-identical verified archive whose content already has a unique historical Git match.
+
+No event is assigned `KNOWN + RECOVERED` or `KNOWN + MISSING` at this stage. The remaining 1,156 Steam events stay `UNVERIFIED` until broader archive recovery or exhaustive same-repository Git comparison provides sufficient evidence.
+
+Historical Git resolution identifies 41 commits as `KNOWN + EXISTING`, eight as `INVALID`, and 67 as `UNVERIFIED`. Three descriptor-only archive/Git near matches are retained for later investigation, and the EPE archive with multiple exact projected Git matches remains unresolved rather than being assigned an arbitrary historical commit.
+
 The data in this directory is retained as an audit trail for the reconstruction process.

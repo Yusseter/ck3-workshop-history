@@ -108,4 +108,21 @@ The verified projected matches are:
 
 The rejected alternative CE and EPE-CFP candidates each contain five genuine tracked-blob differences, producing ten difference rows in total. No final Steam-event `KNOWN + EXISTING` or `KNOWN + RECOVERED` status is assigned by this pilot stage.
 
+### 09-first-pass-archive-verification
+
+First-pass archive verification including:
+
+- resumable verification of all 52 P0 archive revisions selected by Analysis 07
+- reuse of verified Analysis 08 archive content where available
+- automated Modsbase retrieval through isolated Chrome/CDP sessions
+- ZIP SHA-256 provenance and descriptor Workshop-ID validation
+- complete archive path and size inventories
+- Git attribute-aware projected blob comparison against historical candidates
+- persistent per-revision state and cumulative result rebuilding
+- unattended batch execution through the run-to-completion helper
+
+The analysis completes all 52 first-pass archive revisions with no final errors. Of these, 41 resolve to a unique projected historical Git match, one retains multiple exact projected Git matches, and 10 have no exact projected Git match among their Analysis 07 candidates.
+
+All 52 verified archives contain exactly one `descriptor.mod` whose `remote_file_id` matches the expected Workshop ID. Archive-to-Git relationships remain content-verification evidence only; this stage does not by itself assign final Steam-event `KNOWN + EXISTING` or `KNOWN + RECOVERED` statuses.
+
 The data in this directory is retained as an audit trail for the reconstruction process.
